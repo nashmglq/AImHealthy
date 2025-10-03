@@ -6,6 +6,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { authRouter } = require("./routes/authRoutes");
 const { mainRouter } = require("./routes/mainRoutes");
+const { aiRouter } = require("./routes/aiRoutes");
 
 app.use(
   cors({
@@ -19,4 +20,5 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRouter);
 app.use("/api/journal", mainRouter);
+app.use("/api/ai/", aiRouter);
 app.listen(port, () => console.log(port));
