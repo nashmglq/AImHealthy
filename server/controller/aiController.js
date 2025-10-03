@@ -1,5 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
-// const { PrismaClient } = require("../generated/prisma");
+// const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("../generated/prisma");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const prisma = new PrismaClient();
