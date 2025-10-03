@@ -1,8 +1,35 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useLogin } from "../hooks/authHooks"; // ✅ import your hook
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const LoginModal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { login, loading } = useLogin();
+
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await login(form);
+
+    if (result.success) {
+      toast.success(result.success);
+      setIsOpen(false);
+      setForm({ email: "", password: "" });
+      navigate("/dashboard");
+    } else {
+      toast.error(result.error);
+    }
+  };
 
   return (
     <>
@@ -40,10 +67,13 @@ export const LoginModal = () => {
                 Log in to continue your journey.
               </h3>
 
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div>
                   <input
                     type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
                     placeholder="you@example.com"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   />
@@ -52,6 +82,9 @@ export const LoginModal = () => {
                 <div>
                   <input
                     type="password"
+                    name="password"
+                    value={form.password}
+                    onChange={handleChange}
                     placeholder="••••••••"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   />
@@ -59,9 +92,10 @@ export const LoginModal = () => {
 
                 <button
                   type="submit"
+                  disabled={loading}
                   className="w-full bg-blue-500 text-white py-2 rounded-lg shadow hover:bg-blue-600 transition-all duration-300"
                 >
-                  Login
+                  {loading ? "Logging in..." : "Login"}
                 </button>
               </form>
             </div>

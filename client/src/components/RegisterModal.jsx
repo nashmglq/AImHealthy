@@ -16,18 +16,18 @@ export const RegisterModal = () => {
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const result = await register(form);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const result = await register(form);
 
-    if (result?.success) {
-      toast.success(result.success);
-      setIsOpen(false); 
-      setForm({ name: "", email: "", password1: "", password2: "" });
-    } else {
-      toast.error(result?.error || "Registration failed");
-    }
-  };
+  if (result.success) {
+    toast.success(result.success);
+    setIsOpen(false);
+    setForm({ name: "", email: "", password1: "", password2: "" });
+  } else {
+    toast.error(result.error);
+  }
+};
 
   return (
     <>

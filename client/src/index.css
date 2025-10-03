@@ -16,3 +16,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.custom-toast-success .Toastify__toast-icon svg {
+  fill: #60a5fa !important; /* blue-400 */
+}

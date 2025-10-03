@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useVerification } from "../hooks/authHooks";
 import { LandingNavBar } from "../components/LandingNavBar";
 import { LoginModal } from "../components/LoginModal";
 import { RegisterModal } from "../components/RegisterModal";
 
 export const Landing = () => {
+  const navigate = useNavigate();
+  const { verify, loading } = useVerification();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const result = await verify();
+      if (result.success) {
+        navigate("/dashboard");
+      }
+    };
+
+    checkAuth();
+  }, [verify, navigate]);
+
+  if (loading) {
+    return <p className="text-center mt-10">Checking authentication...</p>;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-blue-100">
       <LandingNavBar />
