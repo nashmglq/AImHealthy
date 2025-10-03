@@ -41,7 +41,7 @@ const register = async (req, res) => {
 
     return res.status(200).json({ success: "User registered successfully." });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -72,38 +72,9 @@ const login = async (req, res) => {
       .status(200)
       .json({ success: "Logged in" });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "Server error" });
   }
 };
-
-// const refresh = async (req, res) => {
-//   try {
-//     const token = req.cookies.refreshToken;
-//     if (!token) return res.status(401).json({ error: "No refresh token" });
-
-//     const payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
-//     const user = await prisma.user.findUnique({ where: { id: payload.id } });
-//     if (!user || user.refreshToken !== token)
-//       return res.status(403).json({ error: "Invalid refresh token" });
-
-//     const accessToken = jwt.sign(
-//       { id: user.id, email: user.email },
-//       process.env.ACCESS_TOKEN_SECRET,
-//       { expiresIn: "15m" }
-//     );
-
-//     return res
-//       .cookie("accessToken", accessToken, {
-//         httpOnly: true,
-//         secure: process.env.NODE_ENV === "production",
-//         maxAge: 15 * 60 * 1000,
-//       })
-//       .status(200)
-//       .json({ success: "Access token refreshed" });
-//   } catch (err) {
-//     return res.status(403).json({ error: "Invalid refresh token" });
-//   }
-// };
 
 const logout = async (req, res) => {
   try {
@@ -154,12 +125,11 @@ const updateProfile = async (req, res) => {
     if (!token) return res.status(401).json({ error: "Not authenticated" });
 
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const { name, email, password } = req.body;
+    const { name, email } = req.body;
 
     const data = {};
     if (name) data.name = name;
     if (email) data.email = email;
-    if (password) data.password = await bcrypt.hash(password, 10);
 
     const updatedUser = await prisma.user.update({
       where: { id: payload.id },
@@ -167,11 +137,36 @@ const updateProfile = async (req, res) => {
       select: { id: true, email: true, name: true },
     });
 
-    return res.status(200).json({ success: "Profile updated", user: updatedUser });
+    return res
+      .status(200)
+      .json({ success: "Profile updated", user: updatedUser });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "Server error" });
   }
 };
 
+const verifyUser = async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: { id: true, email: true, name: true },
+    });
 
-module.exports = { register, login, logout, getProfile, updateProfile };
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ success: "Authenticated", user });
+  } catch (err) {
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  logout,
+  getProfile,
+  updateProfile,
+  verifyUser,
+};
