@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDetailJournal, useCreateJournal } from '../../hooks/mainHooks';
-
+import {motion} from "framer-motion"
 
 export const DetailView = () => {
   const { date } = useParams();
@@ -38,7 +38,11 @@ export const DetailView = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <motion.div
+        initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}>
+        <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-t-3xl shadow-lg p-6 md:p-8 flex flex-col gap-4">
           <div className="flex items-center justify-between">
@@ -98,5 +102,6 @@ export const DetailView = () => {
         </div>
       </div>
     </div>
+      </motion.div>
   );
 };

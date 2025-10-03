@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import { Landing } from "./screen/Landing";
 import { ToastContainer } from "react-toastify";
@@ -7,6 +7,7 @@ import { Dashboard } from "./screen/authScreens/Dashboard";
 import { ProtectedRoute } from "./utils/protectedRouting";
 import { DetailView } from "./screen/authScreens/DetailJournal";
 import { Profile } from "./screen/authScreens/Profile";
+import { Insights } from "./screen/authScreens/Insights";
 
 function App() {
   return (
@@ -38,6 +39,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/insights"
+          element={
+            <ProtectedRoute>
+              <Insights />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/dashboard" />}></Route>
       </Routes>
     </Router>
   );

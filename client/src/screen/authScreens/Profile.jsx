@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useGetProfile, useUpdateProfile } from "../../hooks/authHooks";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {motion} from "framer-motion";
 
 export const Profile = () => {
   const { getProfile, loading: loadingProfile } = useGetProfile();
@@ -62,7 +63,11 @@ export const Profile = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] p-6 flex justify-center items-center bg-white">
+    <motion.div
+        initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}>
+        <div className="min-h-[calc(100vh-64px)] p-6 flex justify-center items-center bg-white">
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 transition-all duration-300">
         <div className="flex flex-col items-center mb-8">
@@ -154,5 +159,6 @@ export const Profile = () => {
         )}
       </div>
     </div>
+      </motion.div>
   );
 };
