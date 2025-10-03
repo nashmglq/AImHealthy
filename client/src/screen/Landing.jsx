@@ -1,20 +1,29 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie"; 
+import { useVerification } from "../hooks/authHooks";
 import { LandingNavBar } from "../components/LandingNavBar";
 import { LoginModal } from "../components/LoginModal";
 import { RegisterModal } from "../components/RegisterModal";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion"
 
 export const Landing = () => {
   const navigate = useNavigate();
+  const { verify, loading } = useVerification();
 
   useEffect(() => {
-    const token = Cookies.get("accessToken");
-    if (token) {
-      navigate("/dashboard");
-    }
+    const checkAuth = async () => {
+      const result = await verify();
+      if (result.success) {
+        navigate("/dashboard");
+      }
+    };
+
+    checkAuth();
   }, [navigate]);
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <motion.div
