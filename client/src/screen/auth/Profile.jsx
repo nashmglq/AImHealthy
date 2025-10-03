@@ -10,6 +10,7 @@ export const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [preview, setPreview] = useState("/default.jpg"); // default image
   const baseUrl = process.env.REACT_APP_UPLOADS_URL;
 
   useEffect(() => {
@@ -19,17 +20,11 @@ export const Profile = () => {
         setProfile(result.success);
         setName(result.success.name);
         setEmail(result.success.email);
+        setPreview(result.success.image ? `${baseUrl}/${result.success.image}` : "/default.jpg");
       }
     };
     fetchProfile();
   }, []);
-
-  // IMAGE UPDATE REMOVED
-  /*
-  const handleImageChange = (e) => {
-    ...
-  };
-  */
 
   const handleUpdate = async () => {
     const data = new FormData();
@@ -64,6 +59,16 @@ export const Profile = () => {
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
         <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 transition-all duration-300">
           <div className="flex flex-col items-center mb-8">
+            {/* Profile image */}
+            <div className="relative mb-4">
+              <img
+                src={preview}
+                alt="Profile"
+                className="w-32 h-32 rounded-full object-cover border-4 border-blue-100 shadow-xl transition-all duration-300"
+                onError={(e) => (e.target.src = "/default.jpg")}
+              />
+            </div>
+
             <h1 className="text-3xl font-bold text-black mb-1">Profile Settings</h1>
             <p className="text-gray-600 text-sm">Update your profile information</p>
           </div>
