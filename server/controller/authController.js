@@ -63,7 +63,7 @@ const login = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "3d" }
     );
-
+    console.log(process.env.NODE_ENV === "production")
     return res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
