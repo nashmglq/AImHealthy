@@ -1,4 +1,5 @@
-const { PrismaClient } = require("../generated/prisma");
+const { PrismaClient } = require("@prisma/client");
+// const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 const createJournal = async (req, res) => {
