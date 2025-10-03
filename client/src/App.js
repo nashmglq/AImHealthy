@@ -3,11 +3,11 @@ import "./App.css";
 import { Landing } from "./screen/Landing";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Dashboard from "./screen/authScreens/Dashboard";
+import {Dashboard} from "./screen/auth/Dashboard";
 import { ProtectedRoute } from "./utils/protectedRouting";
-import { DetailView } from "./screen/authScreens/DetailJournal";
-import { Profile } from "./screen/authScreens/Profile";
-import { Insights } from "./screen/authScreens/Insights";
+import { DetailView } from "./screen/auth/DetailJournal";
+import { Profile } from "./screen/auth/Profile";
+import { Insights } from "./screen/auth/Insights";
 
 function App() {
   return (

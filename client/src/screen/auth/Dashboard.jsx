@@ -74,7 +74,7 @@ const Month = React.memo(
   }
 );
 
-const Dashboard = () => {
+export const Dashboard = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [showAll, setShowAll] = useState(false);
   const [journalDates, setJournalDates] = useState([]);
@@ -171,10 +171,3 @@ const Dashboard = () => {
     </motion.div>
   );
 };
-
-
-
-
-
-
-export default Dashboard
