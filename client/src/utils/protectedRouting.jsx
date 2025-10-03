@@ -18,7 +18,7 @@ export const ProtectedRoute = ({ children }) => {
     };
 
     checkAuth();
-  }, [verify]);
+  }, []);
 
   if (isAuth === null) {
     return <p className="text-center mt-10">Loading...</p>;

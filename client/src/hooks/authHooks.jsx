@@ -58,6 +58,7 @@ export const useVerification = () => {
       const response = await axios.get(`${baseUrl}/auth/verify`, {
         withCredentials: true,
       });
+            console.log(response.data.success);
       return { success: response.data.success, error: null };
     } catch (err) {
       const errorMsg = err.response?.data?.error || "Something went wrong";
@@ -84,7 +85,7 @@ export const useLogout = () => {
           withCredentials: true,
         }
       );
-      console.log(response.data.success);
+
       return { success: response.data.success, error: null };
     } catch (err) {
       const errorMsg = err.response?.data?.error || "Something went wrong";
