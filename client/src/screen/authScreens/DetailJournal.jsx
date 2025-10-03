@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDetailJournal } from '../../hooks/mainHooks';
+import { useDetailJournal, useCreateJournal } from '../../hooks/mainHooks';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const DetailView = () => {
   const { date } = useParams();
   const navigate = useNavigate();
-  const { detailJournal, loading } = useDetailJournal();
+  const { detailJournal } = useDetailJournal();
+  const { createJournal, loading } = useCreateJournal();
   const [journalText, setJournalText] = useState('');
 
   useEffect(() => {
@@ -18,21 +21,45 @@ export const DetailView = () => {
     fetchJournal();
   }, [date]);
 
+  useEffect(() => {
+    if (!date) return;
+    const handler = setTimeout(() => {
+      if (journalText.trim()) handleSave();
+    }, 1500);
+
+    return () => clearTimeout(handler);
+  }, [journalText]);
+
+  const handleSave = async () => {
+    if (!date || !journalText.trim()) return;
+    const { success, error } = await createJournal({ date, content: journalText });
+    if (success) toast.success('Journal saved!', { position: 'top-right', autoClose: 1500 });
+    else toast.error(error || 'Failed to save', { position: 'top-right', autoClose: 2000 });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 p-4 md:p-8">
+      <ToastContainer />
       <div className="max-w-4xl mx-auto">
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-t-3xl shadow-lg p-6 md:p-8">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-t-3xl shadow-lg p-6 md:p-8 flex flex-col gap-4">
+          <div className="flex items-center justify-between">
             <button
               onClick={() => navigate(-1)}
-              className="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-all duration-200"
+              className="bg-white bg-opacity-20 hover:bg-opacity-40 text-white p-3 rounded-full flex items-center justify-center shadow-md transition-all duration-200"
             >
               <ArrowLeft size={24} />
             </button>
-            <div className="flex items-center gap-2 text-white">
-              <Calendar size={24} />
-              <span className="text-sm md:text-base font-medium">{date}</span>
+            <div className="flex items-center gap-3 bg-white bg-opacity-20 px-4 py-2 rounded-full shadow-md">
+              <Calendar size={24} className="text-white" />
+              <span className="text-white font-medium">{date}</span>
             </div>
+            <button
+              onClick={handleSave}
+              disabled={loading}
+              className="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-40 text-white rounded-full shadow-md transition-all duration-200 flex items-center justify-center disabled:opacity-50"
+            >
+              {loading ? 'Saving...' : 'Save'}
+            </button>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-white text-center">My Wellness Journal</h1>
         </div>
@@ -53,7 +80,7 @@ export const DetailView = () => {
                 #e5e7eb 31px,
                 #e5e7eb 32px
               )`,
-              backgroundPosition: '0 8px'
+              backgroundPosition: '0 8px',
             }}
           >
             <textarea
@@ -64,21 +91,6 @@ export const DetailView = () => {
               style={{ lineHeight: '32px' }}
             />
           </div>
-        </div>
-
-        <div className="mt-6 bg-white rounded-2xl shadow-lg p-4 flex items-center justify-between">
-          <div className="flex gap-2">
-            <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg">
-              Save Entry
-            </button>
-            <button
-              onClick={() => setJournalText('')}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200"
-            >
-              Clear
-            </button>
-          </div>
-          <div className="text-sm text-gray-500">{journalText.length} characters</div>
         </div>
       </div>
     </div>

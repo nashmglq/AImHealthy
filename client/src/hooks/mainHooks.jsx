@@ -24,3 +24,25 @@ export const useDetailJournal = () => {
 
   return { detailJournal, loading };
 };
+
+export const useCreateJournal = () => {
+  const [loading, setLoading] = useState(false);
+
+  const createJournal = async (userData) => {
+    setLoading(true);
+
+    try {
+      const response = await axios.post(`${baseUrl}/journal/create`, userData, {
+        withCredentials: true,
+      });
+      return { success: response.data.success, error: null };
+    } catch (err) {
+      const errorMsg = err.response?.data?.error || "Something went wrong";
+      return { success: null, error: errorMsg };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { createJournal, loading };
+};
