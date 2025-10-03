@@ -12,10 +12,9 @@ app.use(
     credentials: true,
   })
 );
-app.use(cookieParser()); 
-app.use("/api/auth", authRouter )
+app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use("/api/auth", authRouter);
 app.listen(port, () => console.log(port));
