@@ -7,14 +7,15 @@ export const ProtectedRoute = ({ children }) => {
   const { verify } = useVerification();
   const [isAuth, setIsAuth] = useState(null);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const result = await verify();
-      if (result.success) setIsAuth(true);
-      else setIsAuth(false);
-    };
-    checkAuth();
-  }, []);
+useEffect(() => {
+  const checkAuth = async () => {
+    await new Promise(res => setTimeout(res, 50));
+    const result = await verify();
+    setIsAuth(!!result.success);
+  };
+  checkAuth();
+}, []);
+
 
   if (isAuth === null) return null;
 
