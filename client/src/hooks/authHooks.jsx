@@ -58,7 +58,6 @@ export const useVerification = () => {
       const response = await axios.get(`${baseUrl}/auth/verify`, {
         withCredentials: true,
       });
-      console.log(response.data.success)
       return { success: response.data.success, error: null };
     } catch (err) {
       const errorMsg = err.response?.data?.error || "Something went wrong";
@@ -70,19 +69,22 @@ export const useVerification = () => {
 
   return { verify, loading };
 };
-
 
 export const useLogout = () => {
   const [loading, setLoading] = useState(false);
 
-  const verify = async () => {
+  const logout = async () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${baseUrl}/auth/logout`, {
-        withCredentials: true,
-      });
-      console.log(response.data.success)
+      const response = await axios.post(
+        `${baseUrl}/auth/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response.data.success);
       return { success: response.data.success, error: null };
     } catch (err) {
       const errorMsg = err.response?.data?.error || "Something went wrong";
@@ -92,6 +94,5 @@ export const useLogout = () => {
     }
   };
 
-  return { verify, loading };
+  return { logout, loading };
 };
-
