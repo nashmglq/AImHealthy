@@ -10,10 +10,11 @@ const { aiRouter } = require("./routes/aiRoutes");
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL || "https://a-im-healthy.vercel.app/",
     credentials: true,
   })
 );
+console.log(process.env.CLIENT_URL)
 app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
 app.use(express.json());
