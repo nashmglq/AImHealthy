@@ -81,16 +81,25 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
   try {
     return res
-      .clearCookie("accessToken")
+      .clearCookie("accessToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+      })
       .status(200)
       .json({ success: "Logged out" });
   } catch (err) {
     return res
-      .clearCookie("accessToken")
+      .clearCookie("accessToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
       .status(500)
       .json({ error: "Something went wrong" });
   }
 };
+
 
 const getProfile = async (req, res) => {
   try {
