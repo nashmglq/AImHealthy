@@ -2,13 +2,14 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "build": "prisma generate",
-    "postinstall": "prisma generate",
-    "migrate:deploy": "prisma migrate deploy"
-  },
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "start": "nodemon server.js",
+  "build": "npx prisma generate",
+  "postinstall": "npx prisma generate",
+  "migrate:deploy": "npx prisma migrate deploy"
+}
+,
   "author": "",
   "license": "ISC",
   "description": "",
