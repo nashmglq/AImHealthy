@@ -9,19 +9,21 @@ datasource db {
 }
 
 model User {
-  id         Int        @id @default(autoincrement())
-  email      String     @unique
-  name       String?
-  password   String
-  image      String?
-  journals   Journal[]
-  insights   Insight[]   
-  chatbots   ChatbotMessage[]
+  id       Int              @id @default(autoincrement())
+  email    String           @unique
+  name     String?
+  password String
+  image    String?
+  journals Journal[]
+  insights Insight[]
+  chatbots ChatbotMessage[]
+
+  @@map("users")
 }
 
 model Journal {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   content   String
   title     String?
@@ -30,23 +32,28 @@ model Journal {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, date])
+  @@map("journals")
 }
 
 model Insight {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
-  content   String   
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("insights")
 }
 
 model ChatbotMessage {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
-  message   String   
-  role      String   
+  message   String
+  role      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("chatbot_messages")
 }

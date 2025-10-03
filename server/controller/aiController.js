@@ -86,7 +86,7 @@ Instructions:
       },
     });
 
-    return res.status(200).json({ message: botMessage });
+    return res.status(200).json({ success: botMessage });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Failed to generate AI response" });
@@ -151,7 +151,7 @@ Instructions:
       data: { userId, content: insightText },
     });
 
-    return res.status(200).json({ message: insightText });
+    return res.status(200).json({ success: insightText });
   } catch (err) {
     return res.status(500).json({ error: "Failed to generate insights" });
   }
@@ -166,7 +166,7 @@ const getChatBot = async (req, res) => {
     orderBy: { createdAt: "asc" },
   });
 
-  return res.status(200).json({ messages });
+  return res.status(200).json({ success: messages });
 };
 
 const getLatestInsights = async (req, res) => {
@@ -178,9 +178,9 @@ const getLatestInsights = async (req, res) => {
   });
 
   if (!latestInsight)
-    return res.status(200).json({ message: "No insights found." });
+    return res.status(400).json({ error: "No insights found." });
 
-  return res.status(200).json({ insight: latestInsight });
+  return res.status(200).json({ success: latestInsight });
 };
 
 const getAllInsights = async (req, res) => {
@@ -192,9 +192,9 @@ const getAllInsights = async (req, res) => {
   });
 
   if (!insights.length)
-    return res.status(200).json({ message: "No insights found." });
+    return res.status(400).json({ error: "No insights found." });
 
-  return res.status(200).json({ insights });
+  return res.status(200).json({ success: insights });
 };
 
 
