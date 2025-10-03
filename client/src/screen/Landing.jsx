@@ -10,16 +10,16 @@ export const Landing = () => {
   const navigate = useNavigate();
   const { verify, loading } = useVerification();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const result = await verify();
-      if (result.success) {
-        navigate("/dashboard");
-      }
-    };
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     const result = await verify();
+  //     if (result.success) {
+  //       navigate("/dashboard");
+  //     }
+  //   };
 
-    checkAuth();
-  }, [verify, navigate]);
+  //   checkAuth();
+  // }, [verify, navigate]);
 
   if (loading) {
     return null;
