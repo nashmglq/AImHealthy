@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { HeartPulse, LogOut } from "lucide-react";
+import { HeartPulse, LogOut, User } from "lucide-react";
 import { useLogout } from "../../hooks/authHooks";
 export const NavBar = () => {
   const { logout, loading } = useLogout();
@@ -24,7 +24,10 @@ export const NavBar = () => {
           </h1>
         </Link>
       </div>
-      <div className="space-x-4 mx-2">
+      <div className="space-x-8 mx-2 flex justify-center items-center">
+        <Link to="/profile">
+          <User size = {18} />
+        </Link>
         <button onClick={logoutHandler}>
           {" "}
           <LogOut size={18} />{" "}

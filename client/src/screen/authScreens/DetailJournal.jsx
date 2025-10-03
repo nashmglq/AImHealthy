@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDetailJournal, useCreateJournal } from '../../hooks/mainHooks';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 export const DetailView = () => {
   const { date } = useParams();
@@ -35,14 +34,11 @@ export const DetailView = () => {
 
   const handleSave = async () => {
     if (!date || (!journalText.trim() && !title.trim())) return;
-    const { success, error } = await createJournal({ date, content: journalText, title });
-    if (success) toast.success('Journal saved!', { position: 'top-right', autoClose: 1500 });
-    else toast.error(error || 'Failed to save', { position: 'top-right', autoClose: 2000 });
+    const { success, error } = await createJournal({ date, content: journalText, title });;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-100 p-4 md:p-8">
-      <ToastContainer />
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-t-3xl shadow-lg p-6 md:p-8 flex flex-col gap-4">
           <div className="flex items-center justify-between">

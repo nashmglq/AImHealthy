@@ -22,7 +22,6 @@ export const LoginModal = () => {
     const result = await login(form);
 
     if (result.success) {
-      toast.success(result.success);
       setIsOpen(false);
       setForm({ email: "", password: "" });
       navigate("/dashboard");

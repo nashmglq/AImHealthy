@@ -97,3 +97,51 @@ export const useLogout = () => {
 
   return { logout, loading };
 };
+
+
+export const useGetProfile = () => {
+  const [loading, setLoading] = useState(false);
+
+  const getProfile = async () => {
+    setLoading(true);
+
+    try {
+      const response = await axios.get(`${baseUrl}/auth/profile`, {
+        withCredentials: true,
+      });
+      console.log(response.data.success);
+      return { success: response.data.success, error: null };
+    } catch (err) {
+      const errorMsg = err.response?.data?.error || "Something went wrong";
+      return { success: null, error: errorMsg };
+    } finally {
+      setLoading(false);
+    }
+  };
+  return { getProfile, loading };
+};
+
+export const useUpdateProfile = () => {
+  const [loading, setLoading] = useState(false);
+
+  const updateProfile = async (userData) => {
+    setLoading(true);
+
+    try {
+      console.log(userData)
+      const response = await axios.patch(`${baseUrl}/auth/profile`, userData,{
+        withCredentials: true,
+      });
+     
+      return { success: response.data.success, error: null };
+    } catch (err) {
+      const errorMsg = err.response?.data?.error || "Something went wrong";
+      return { success: null, error: errorMsg };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { updateProfile, loading };
+};
+

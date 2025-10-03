@@ -21,7 +21,7 @@ export const ProtectedRoute = ({ children }) => {
   }, []);
 
   if (isAuth === null) {
-    return <p className="text-center mt-10">Loading...</p>;
+    return null;
   }
 
   if (!isAuth) {

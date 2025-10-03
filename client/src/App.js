@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Dashboard } from "./screen/authScreens/Dashboard";
 import { ProtectedRoute } from "./utils/protectedRouting";
 import { DetailView } from "./screen/authScreens/DetailJournal";
+import { Profile } from "./screen/authScreens/Profile";
 
 function App() {
   return (
@@ -26,6 +27,14 @@ function App() {
           element={
             <ProtectedRoute>
               <DetailView />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />
