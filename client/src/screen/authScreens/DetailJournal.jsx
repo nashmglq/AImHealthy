@@ -11,12 +11,16 @@ export const DetailView = () => {
   const { detailJournal } = useDetailJournal();
   const { createJournal, loading } = useCreateJournal();
   const [journalText, setJournalText] = useState('');
+  const [title, setTitle] = useState('');
 
   useEffect(() => {
     if (!date) return;
     const fetchJournal = async () => {
       const { success } = await detailJournal(date);
-      if (success) setJournalText(success.content || '');
+      if (success) {
+        setJournalText(success.content || '');
+        setTitle(success.title || '');
+      }
     };
     fetchJournal();
   }, [date]);
@@ -24,15 +28,14 @@ export const DetailView = () => {
   useEffect(() => {
     if (!date) return;
     const handler = setTimeout(() => {
-      if (journalText.trim()) handleSave();
+      if (journalText.trim() || title.trim()) handleSave();
     }, 1500);
-
     return () => clearTimeout(handler);
-  }, [journalText]);
+  }, [journalText, title]);
 
   const handleSave = async () => {
-    if (!date || !journalText.trim()) return;
-    const { success, error } = await createJournal({ date, content: journalText });
+    if (!date || (!journalText.trim() && !title.trim())) return;
+    const { success, error } = await createJournal({ date, content: journalText, title });
     if (success) toast.success('Journal saved!', { position: 'top-right', autoClose: 1500 });
     else toast.error(error || 'Failed to save', { position: 'top-right', autoClose: 2000 });
   };
@@ -61,7 +64,12 @@ export const DetailView = () => {
               {loading ? 'Saving...' : 'Save'}
             </button>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white text-center">My Wellness Journal</h1>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+            className="mt-4 w-full text-2xl md:text-3xl font-bold text-white bg-white bg-opacity-20 px-4 py-2 rounded-2xl text-center placeholder-white placeholder-opacity-70 focus:outline-none"
+          />
         </div>
 
         <div className="bg-white rounded-b-3xl shadow-2xl overflow-hidden relative">

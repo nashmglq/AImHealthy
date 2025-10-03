@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link, Outlet } from 'react-router-dom';
+import { useListJournals } from '../../hooks/mainHooks'; // import your hook
 
 export const Dashboard = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [showAll, setShowAll] = useState(false);
+  const [journalDates, setJournalDates] = useState([]); // store all journal dates
+
+  const { listJournals } = useListJournals();
+
+  useEffect(() => {
+    const fetchJournals = async () => {
+      const { success } = await listJournals();
+      if (success) {
+        // extract only the date part (YYYY-MM-DD)
+        const dates = success.map(j => j.date.split('T')[0]);
+        setJournalDates(dates);
+      }
+    };
+    fetchJournals();
+  }, [listJournals]);
 
   const months = [
     'January','February','March','April','May','June',
@@ -26,15 +42,18 @@ export const Dashboard = () => {
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = `${currentYear}-${String(monthIndex + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
       const isToday = dateStr === new Date().toISOString().split('T')[0];
+      const hasJournal = journalDates.includes(dateStr);
+
       days.push(
         <Link
           key={day}
           to={`/dashboard/${dateStr}`}
-          className={`aspect-square min-h-[28px] flex items-center justify-center rounded-lg text-xs font-medium transition-all duration-200 hover:bg-blue-500 hover:text-white hover:scale-110 ${
+          className={`aspect-square min-h-[28px] flex flex-col items-center justify-center rounded-lg text-xs font-medium transition-all duration-200 hover:bg-blue-500 hover:text-white hover:scale-110 ${
             isToday ? 'bg-blue-100 text-blue-600 ring-2 ring-blue-500' : 'text-gray-700'
           }`}
         >
           {day}
+          {hasJournal && <div className="w-1.5 h-1.5 mt-1 rounded-full bg-blue-500" />}
         </Link>
       );
     }

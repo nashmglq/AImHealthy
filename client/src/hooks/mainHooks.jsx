@@ -46,3 +46,25 @@ export const useCreateJournal = () => {
 
   return { createJournal, loading };
 };
+
+export const useListJournals = () => {
+  const [loading, setLoading] = useState(false);
+
+  const listJournals = async (userData) => {
+    setLoading(true);
+
+    try {
+      const response = await axios.get(`${baseUrl}/journal/`,  {
+        withCredentials: true,
+      });
+      return { success: response.data.success, error: null };
+    } catch (err) {
+      const errorMsg = err.response?.data?.error || "Something went wrong";
+      return { success: null, error: errorMsg };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { listJournals, loading };
+};
