@@ -93,48 +93,43 @@ const logout = async (req, res) => {
 
 const getProfile = async (req, res) => {
   try {
-    const token = req.cookies.accessToken;
-    if (!token) return res.status(401).json({ error: "Not authenticated" });
 
-    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     const user = await prisma.user.findUnique({
-      where: { id: payload.id },
-      select: { id: true, email: true, name: true },
+      where: { id: req.user.id },
+      select: { id: true, email: true, name: true, image: true },
     });
-
+    console.log(user)
     if (!user) return res.status(404).json({ error: "User not found" });
-
-    return res.status(200).json({ user });
-  } catch {
-    return res.status(401).json({ error: "Invalid token" });
+    return res.status(200).json({ success :user });
+  } catch (err) {
+    console.log("getProfile error:", err.message);
+    return res.status(500).json({ error: "Server error" });
   }
 };
 
 const updateProfile = async (req, res) => {
   try {
-    const token = req.cookies.accessToken;
-    if (!token) return res.status(401).json({ error: "Not authenticated" });
-
-    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const { name, email } = req.body;
+    const { name } = req.body;
+    const image = req.file ? req.file.filename : undefined; // <-- use filename only
+    console.log(name, image);
 
     const data = {};
     if (name) data.name = name;
-    if (email) data.email = email;
+    if (image) data.image = image;
 
     const updatedUser = await prisma.user.update({
-      where: { id: payload.id },
+      where: { id: req.user.id },
       data,
-      select: { id: true, email: true, name: true },
     });
 
-    return res
-      .status(200)
-      .json({ success: "Profile updated", user: updatedUser });
+    return res.status(200).json({ success: updatedUser });
   } catch (err) {
+    console.log("updateProfile error:", err.message);
     return res.status(500).json({ error: "Server error" });
   }
 };
+
+
 
 const verifyUser = async (req, res) => {
   try {
