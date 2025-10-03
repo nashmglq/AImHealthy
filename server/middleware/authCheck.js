@@ -4,7 +4,7 @@ const multer = require("multer");
 const authChecker = (req, res, next) => {
   try {
     let token = req.header("Authorization")?.split(" ")[1];
-
+    
     if (!token && req.cookies?.accessToken) {
       token = req.cookies.accessToken;
     }

@@ -78,27 +78,18 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    const token = req.cookies.refreshToken;
-    if (token) {
-      const payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
-      await prisma.user.update({
-        where: { id: payload.id },
-        data: { refreshToken: null },
-      });
-    }
     return res
       .clearCookie("accessToken")
-      .clearCookie("refreshToken")
       .status(200)
       .json({ success: "Logged out" });
-  } catch {
+  } catch (err) {
     return res
       .clearCookie("accessToken")
-      .clearCookie("refreshToken")
-      .status(200)
-      .json({ success: "Logged out" });
+      .status(500)
+      .json({ error: "Something went wrong" });
   }
 };
+
 
 const getProfile = async (req, res) => {
   try {
@@ -147,6 +138,7 @@ const updateProfile = async (req, res) => {
 
 const verifyUser = async (req, res) => {
   try {
+
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
       select: { id: true, email: true, name: true },
@@ -158,6 +150,7 @@ const verifyUser = async (req, res) => {
 
     return res.status(200).json({ success: "Authenticated", user });
   } catch (err) {
+        console.log("HOW MANY!")
     return res.status(500).json({ error: "Server error" });
   }
 };
