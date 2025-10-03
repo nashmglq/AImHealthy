@@ -3,7 +3,7 @@ import "./App.css";
 import { Landing } from "./screen/Landing";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Dashboard } from "./screen/authScreens/dashboard";
+import { Dashboard } from "./screen/authScreens/Dashboard";
 import { ProtectedRoute } from "./utils/protectedRouting";
 
 function App() {
