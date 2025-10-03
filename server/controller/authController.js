@@ -63,11 +63,12 @@ const login = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "3d" }
     );
-    console.log(process.env.NODE_ENV === "production")
+    console.log(process.env.NODE_ENV === "production");
     return res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
         maxAge: 3 * 24 * 60 * 60 * 1000,
       })
       .status(200)
@@ -91,17 +92,15 @@ const logout = async (req, res) => {
   }
 };
 
-
 const getProfile = async (req, res) => {
   try {
-
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
       select: { id: true, email: true, name: true, image: true },
     });
-    console.log(user)
+    console.log(user);
     if (!user) return res.status(404).json({ error: "User not found" });
-    return res.status(200).json({ success :user });
+    return res.status(200).json({ success: user });
   } catch (err) {
     console.log("getProfile error:", err.message);
     return res.status(500).json({ error: "Server error" });
@@ -130,11 +129,8 @@ const updateProfile = async (req, res) => {
   }
 };
 
-
-
 const verifyUser = async (req, res) => {
   try {
-
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
       select: { id: true, email: true, name: true },
@@ -146,7 +142,7 @@ const verifyUser = async (req, res) => {
 
     return res.status(200).json({ success: "Authenticated", user });
   } catch (err) {
-        console.log("HOW MANY!")
+    console.log("HOW MANY!");
     return res.status(500).json({ error: "Server error" });
   }
 };
