@@ -36,13 +36,14 @@ export const Insights = () => {
     fetchAll();
   }, []);
 
-  const handleGenerate = async () => {
-    const { success } = await generateInsights({ days });
-    if (success) {
-      setLatestInsight(success);
-      fetchAll();
-    }
-  };
+const handleGenerate = async () => {
+  const { success } = await generateInsights(days); 
+  if (success) {
+    await fetchLatest();
+    await fetchAll();
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-white p-8">
@@ -54,6 +55,20 @@ export const Insights = () => {
                 <Clock size={24} className="text-blue-500" />
                 Latest Insight
               </h2>
+
+
+          <div className="flex gap-x-2 items-center justify-center">
+                      <label className="text-gray-700 font-medium">Time Range:</label>
+                <select
+                  value={days}
+                  onChange={(e) => setDays(Number(e.target.value))}
+                  className="border border-gray-300 rounded-lg px-3 py-1"
+                >
+                  <option value={7}>Last 7 Days</option>
+                  <option value={15}>Last 15 Days</option>
+                  <option value={30}>Last 30 Days</option>
+                </select>
+
               <button
                 onClick={handleGenerate}
                 disabled={generating}
@@ -61,8 +76,11 @@ export const Insights = () => {
               >
                 {generating ? "Generating..." : "Generate"}
               </button>
+          </div>
+
+
             </div>
-            
+
             <div className="bg-white border border-gray-100 rounded-2xl p-8 min-h-[400px]">
               {loadingLatest ? (
                 <p className="text-gray-400">Loading...</p>
@@ -90,7 +108,7 @@ export const Insights = () => {
               <List size={24} className="text-blue-500" />
               History
             </h2>
-            
+
             <div className="bg-white border border-gray-100 rounded-2xl p-6 max-h-[600px] overflow-y-auto">
               {loadingAll ? (
                 <p className="text-gray-400">Loading...</p>

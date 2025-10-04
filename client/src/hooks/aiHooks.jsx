@@ -28,17 +28,20 @@ export const useChatBot = () => {
 export const useGenerateInsights = () => {
   const [loading, setLoading] = useState(false);
 
-  const generateInsights = async () => {
+  const generateInsights = async (days = 7) => { 
     setLoading(true);
     try {
       const response = await axios.post(
         `${baseUrl}/ai/insights`,
-        {},
+        { days },
         { withCredentials: true }
       );
       return { success: response.data.success, error: null };
     } catch (err) {
-      return { success: null, error: err.response?.data?.error || "Something went wrong" };
+      return {
+        success: null,
+        error: err.response?.data?.error || "Something went wrong",
+      };
     } finally {
       setLoading(false);
     }
@@ -46,6 +49,7 @@ export const useGenerateInsights = () => {
 
   return { generateInsights, loading };
 };
+
 
 export const useGetChatBotMessages = () => {
   const [loading, setLoading] = useState(false);

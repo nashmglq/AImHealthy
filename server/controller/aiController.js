@@ -96,11 +96,12 @@ Instructions:
 
 const generateUserInsights = async (req, res) => {
   const userId = req.user.id;
-
+  const { days = 7 } = req.body; 
+  console.log(days)
   const user = await prisma.user.findUnique({
     where: { id: userId },
     include: {
-      journals: { orderBy: { date: "desc" } },
+      journals: { orderBy: { date: "desc" } }, 
       chatbots: { orderBy: { createdAt: "asc" }, take: 20 },
     },
   });
@@ -109,15 +110,11 @@ const generateUserInsights = async (req, res) => {
   if (!user.journals.length)
     return res.status(200).json({ message: "No journal entries yet." });
 
-  const journalContext = user.journals
+  const recentJournals = user.journals.slice(0, days);
+
+  const journalContext = recentJournals
     .map((j) => `Title: ${j.title || "No title"}\nContent: ${j.content}`)
     .join("\n\n");
-
-  const firstDate = user.journals[user.journals.length - 1].date;
-  const lastDate = user.journals[0].date;
-  const timeRangeDays = Math.ceil(
-    (new Date(lastDate) - new Date(firstDate)) / (1000 * 60 * 60 * 24)
-  );
 
   const chatHistory =
     user.chatbots
@@ -129,7 +126,7 @@ Hey! You're an AI buddy here to support mental, emotional, and physical well-bei
 Give helpful, positive advice and insights in **bullet points**. Keep it casual—like a friend talking to another friend.
 Never suggest anything unsafe or harmful.
 
-Recent journal entries from the last ${timeRangeDays} days:
+Recent journal entries from the last ${days} days:
 ${journalContext}
 
 Recent chats:
@@ -154,6 +151,7 @@ Instructions:
 
     return res.status(200).json({ success: insightText });
   } catch (err) {
+    console.error(err);
     return res.status(500).json({ error: "Failed to generate insights" });
   }
 };
