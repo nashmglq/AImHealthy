@@ -28,19 +28,19 @@ export const AboutUs = () => {
       name: "Steven Nash Maglaqui",
       role: "Full-Stack Developer, AI Integrator, and Leader",
       desc: "Leads the project development, integrating both frontend and backend systems, and ensures AI features are properly implemented.",
-      image: "dev/default.jpg",
+      image: "dev/nash.jpg",
     },
     {
       name: "Martin Gabriel A. Libunao",
       role: "Frontend Developer",
       desc: "Focuses on creating responsive, user-friendly interfaces and collaborates closely on design improvements.",
-      image: "dev/default.jpg",
+      image: "dev/gab.jpg",
     },
     {
       name: "Russel Dione Mata",
       role: "UI/UX Designer",
       desc: "Designs and refines the visual layout, ensuring an intuitive and engaging user experience while presenting the team’s vision effectively.",
-      image: "dev/default.jpg",
+      image: "dev/russel.jpg",
     },
   ];
 
