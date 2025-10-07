@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useChatBot, useGetChatBotMessages } from "../../hooks/aiHooks";
 import { Send, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 
 export const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,8 +10,7 @@ export const ChatBot = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const messagesEndRef = useRef(null);
 
-  const { getChatBotMessages, loading: loadingHistory } =
-    useGetChatBotMessages();
+  const { getChatBotMessages, loading: loadingHistory } = useGetChatBotMessages();
   const { chatBot, loading: sending } = useChatBot();
 
   const toggleChat = async () => {
@@ -37,7 +36,7 @@ export const ChatBot = () => {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatHistory]);
+  }, [chatHistory, sending]);
 
   return (
     <>
@@ -81,6 +80,33 @@ export const ChatBot = () => {
               ) : (
                 <p className="text-gray-500 text-sm">No messages yet.</p>
               )}
+
+              {/* Loader when bot is replying */}
+              {sending && (
+                <div className="bg-gray-100 text-gray-800 self-start p-3 rounded-xl max-w-[70%]">
+                  <span className="flex gap-1">
+                    <motion.span
+                      animate={{ opacity: [0.2, 1, 0.2] }}
+                      transition={{ repeat: Infinity, duration: 1 }}
+                    >
+                      •
+                    </motion.span>
+                    <motion.span
+                      animate={{ opacity: [0.2, 1, 0.2] }}
+                      transition={{ repeat: Infinity, duration: 1, delay: 0.2 }}
+                    >
+                      •
+                    </motion.span>
+                    <motion.span
+                      animate={{ opacity: [0.2, 1, 0.2] }}
+                      transition={{ repeat: Infinity, duration: 1, delay: 0.4 }}
+                    >
+                      •
+                    </motion.span>
+                  </span>
+                </div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 
