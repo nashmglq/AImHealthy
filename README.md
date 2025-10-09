@@ -1,30 +1,32 @@
 # **Technical Readme**
 
 ## **SDG and Target**
-Our project aligns with **SDG 3: Good Health and Well-Being**, focusing on the target of promoting mental health and well-being for all.  
-**AI'm Healthy** serves as a personal AI companion designed to foster self-reflection and emotional awareness. Through guided journaling and mood tracking, it encourages users to understand their emotions, identify trends, and build healthy mental habits. The system aims to make emotional wellness more accessible by combining intuitive design with intelligent AI feedback that supports users in their self-improvement journey.
+This project supports **SDG 3: Good Health and Well-Being**, focusing on improving mental health and emotional awareness.  
+**AI'm Healthy** is an AI-powered journaling companion that promotes self-reflection and emotional understanding. It helps users monitor their mood patterns, engage with guided prompts, and receive meaningful insights that encourage personal growth and mental wellness.  
+By combining intelligent analysis with a calming, user-friendly interface, the system makes emotional health management accessible to everyone.
 
 ## **Tech Stack**
-- **Frontend:** React.js – for building a dynamic, interactive, and responsive interface.  
-- **Backend:** Node.js with Express.js – for managing API routes and handling requests.  
-- **Database:** PostgreSQL – for securely storing user data, journal entries, and AI responses.  
-- **ORM:** Prisma – for seamless database communication and schema management.  
-- **AI Integration:** OpenAI API – for generating personalized insights and emotional analysis.  
-- **Styling:** TailwindCSS – for creating a clean, modern, and calming interface.  
+- **Frontend:** React.js — for an interactive and responsive user experience.  
+- **Backend:** Node.js with Express.js — for handling API routes and server logic.  
+- **Database:** PostgreSQL — to store user journals, AI insights, and mood logs.  
+- **ORM:** Prisma — for simplified database schema and secure queries.  
+- **AI Integration:** OpenAI API — to generate contextual feedback and emotion-based insights.  
+- **Styling:** TailwindCSS — for modern, minimalistic, and responsive design.  
 - **Deployment:** Vercel (frontend) and Render (backend).  
 - **Architecture Pattern:** PERN (PostgreSQL, Express, React, Node).
 
 ## **Architecture**
-The system follows a **PERN full-stack architecture** that enables smooth communication between all components.  
-Users interact with the **React frontend**, where they can write journal entries, log emotions, and view AI-generated feedback. When a user submits an entry, the frontend sends a **POST request** to the **Express.js backend**. The backend validates the input and uses **Prisma** to store the entry in the **PostgreSQL database**.  
-If AI analysis is requested, the backend sends the journal content to the **OpenAI API**, which processes it and returns an intelligent, empathetic response. This response is then sent back to the frontend, displayed to the user, and optionally saved in the database for pattern tracking.  
-This architecture allows for real-time feedback, secure data handling, and scalable expansion for future mental health insights and analytics.
+The platform follows a **PERN stack architecture** that ensures seamless interaction between the client, server, and AI services.  
+User inputs such as journal entries or emotion logs are submitted through the **React frontend**, which sends requests to the **Express.js backend**. The backend validates and stores the data in **PostgreSQL** via **Prisma ORM**.  
+If AI analysis is required, the backend connects to the **OpenAI API**, processes the journal content, and returns an emotionally intelligent reflection. The response is then displayed in the frontend interface and optionally stored for tracking emotional patterns over time.  
+This data flow allows real-time communication, maintains data privacy, and ensures a smooth and responsive user experience.
 
 ## **Biggest Challenge**
-The most significant technical challenge was **CORS (Cross-Origin Resource Sharing) configuration** during deployment. Since the **frontend** (Vercel) and **backend** (Render) were hosted on different domains, the browser blocked requests due to mismatched origin headers.  
-To resolve this, we:
-1. Configured the **Express CORS middleware** to include the exact production domain of the frontend.  
-2. Used **environment variables** to dynamically set allowed origins for development and production environments.  
-3. Tested deployment pipelines to ensure consistent API communication without exposing sensitive URLs or keys.  
+The main technical challenge was ensuring **secure and consistent CORS communication** between the deployed frontend and backend.  
+When the frontend (Vercel) and backend (Render) were hosted on separate domains, mismatched origin headers caused blocked API requests. To solve this, the team:  
+1. Configured **CORS middleware** in Express to allow only verified domains.  
+2. Implemented **environment-based configurations** for development and production URLs.  
+3. Secured API keys and database credentials using environment variables.  
 
-By implementing these fixes, the system achieved stable communication between all layers, allowing user inputs and AI responses to flow securely and efficiently. This solution not only solved the deployment issue but also strengthened the project’s overall architecture for scalability and future integrations.
+After refining these configurations, data exchange between the client and server became stable, secure, and production-ready.  
+This solution strengthened the overall reliability of the system and paved the way for future scalability and AI feature expansion.
